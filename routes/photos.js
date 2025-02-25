@@ -24,6 +24,11 @@ router.get("/photos/:id",(req,res)=>{
     res.json(photo)
 }); 
 
+router.get("/photos/:id/comments", (req,res)=>{
+    const id = req.params.id;
+    const photo = getPhotoById(id);
+    res.json(photo.comments)
+})
 
 
 export default router
