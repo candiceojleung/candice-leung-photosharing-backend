@@ -43,6 +43,7 @@ router.post("/photos/:id/comments", (req, res) => {
       timestamp: Date.now()
     };
     (photo.comments).push(newComment);
+    fs.writeFileSync("./data/photos.json", JSON.stringify(photo.comments));
     res.json(newComment);
   });
 
