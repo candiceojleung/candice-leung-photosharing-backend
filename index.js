@@ -16,6 +16,8 @@ app.get ('/tags', tags)
 
 app.get('/photos', photos)
 
+app.get('/photos/:id', photos)
+
 app.post("/photos/:id/comments", (req, res) => {
     const { name,comment } = req.body;
     const newComment = {
