@@ -10,31 +10,48 @@ function getPhotos() {
 }
 
 function getPhotoById(id) {
-  const photos =getPhotos();
+  const photos = getPhotos();
   return photos.find((photo) => photo.id === id) || null;
 }
 
 router.get("/photos", (req, res) => {
-  const photos =getPhotos();
+  const photos = getPhotos();
   res.json(photos);
 });
 
 router.get("/photos/:id", (req, res) => {
   const id = req.params.id;
   const photo = getPhotoById(id);
-  res.json(photo);
+
+  if (photo) {
+    res.status(200).json(photo);
+  } else {
+    res.status(404).json({ message: "Photo not found" });
+  }
 });
 
 router.get("/photos/:id/comments", (req, res) => {
   const id = req.params.id;
   const photo = getPhotoById(id);
-  res.json(photo.comments);
+
+  if (photo) {
+    res.status(200).json(photo.comments);
+  } else {
+    res.status(404).json({ message: "Photo not found" });
+  }
 });
 
 router.post("/photos/:id/comments", (req, res) => {
   const id = req.params.id;
   const { name, comment } = req.body;
-  const photos =getPhotos();
+
+  if (name.trim() === "" || comment.trim() === "") {
+    return res
+      .status(400)
+      .json({ message: "Name and comment are required and must not be empty" });
+  }
+
+  const photos = getPhotos();
   const newComment = {
     id: uuidv4(),
     name: name,
@@ -42,11 +59,15 @@ router.post("/photos/:id/comments", (req, res) => {
     timestamp: Date.now(),
   };
 
-  const photo = photos.find((photo) => photo.id === id)  
+  const photo = photos.find((photo) => photo.id === id);
+  if (!photo) {
+    return res.status(404).json({ message: "Photo not found" });
+  }
+
   photo.comments.push(newComment);
   try {
     fs.writeFileSync("./data/photos.json", JSON.stringify(photos, null, 2));
-    res.json(newComment);
+    res.status(201).json(newComment);
   } catch (error) {
     console.log(error);
   }
