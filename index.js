@@ -11,6 +11,8 @@ app.use(express.json());
 const { CORS_ORIGIN } = process.env;
 app.use(cors({ origin: CORS_ORIGIN }));
 
+app.use('/images', express.static('./public/images')); 
+
 app.get("/tags", tags);
 
 app.get("/photos", photos);
