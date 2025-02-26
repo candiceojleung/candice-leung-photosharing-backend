@@ -11,14 +11,14 @@ app.use(express.json());
 const { CORS_ORIGIN } = process.env;
 app.use(cors({ origin: CORS_ORIGIN }));
 
-app.get ('/tags', tags)
+app.get("/tags", tags);
 
-app.get('/photos', photos)
+app.get("/photos", photos);
 
-app.get('/photos/:id', photos)
+app.get("/photos/:id", photos);
 
-app.get('/photos/:id/comments',photos)
+app.get("/photos/:id/comments", photos);
 
-app.post('/photos/:id/comments',photos); 
-  
+app.post("/photos/:id/comments", photos);
+
 app.listen(port, () => console.log(`Listening on ${port}`));
