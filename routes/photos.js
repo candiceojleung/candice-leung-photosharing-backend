@@ -33,17 +33,19 @@ router.get("/photos/:id/comments", (req, res) => {
 
 router.post("/photos/:id/comments", (req, res) => {
   const id = req.params.id;
-  const photo = getPhotoById(id);
   const { name, comment } = req.body;
+  const photos = readPhotos();
   const newComment = {
     id: uuidv4(),
     name: name,
     comment: comment,
     timestamp: Date.now(),
   };
+
+  const photo = photos.find((photo) => photo.id === id)  
   photo.comments.push(newComment);
   try {
-    fs.writeFileSync("./data/photos.json", JSON.stringify(photo.comments));
+    fs.writeFileSync("./data/photos.json", JSON.stringify(photos, null, 2));
     res.json(newComment);
   } catch (error) {
     console.log(error);
