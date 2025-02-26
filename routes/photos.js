@@ -4,9 +4,13 @@ import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 
 function getPhotos() {
-  const photosData = fs.readFileSync("./data/photos.json");
-  const parsedPhotos = JSON.parse(photosData);
-  return parsedPhotos;
+  try{
+    const photosData = fs.readFileSync("./data/photos.json");
+    const parsedPhotos = JSON.parse(photosData);
+    return parsedPhotos;
+  } catch(error){
+    console.log(error);
+  }
 }
 
 function getPhotoById(id) {
@@ -14,11 +18,18 @@ function getPhotoById(id) {
   return photos.find((photo) => photo.id === id) || null;
 }
 
+//get all photos 
 router.get("/photos", (req, res) => {
-  const photos = getPhotos();
-  res.json(photos);
+  try {
+    const photos = getPhotos();
+    res.json(photos);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
+
+//get photo by id 
 router.get("/photos/:id", (req, res) => {
   const id = req.params.id;
   const photo = getPhotoById(id);
@@ -30,6 +41,8 @@ router.get("/photos/:id", (req, res) => {
   }
 });
 
+
+//get comment by photo id 
 router.get("/photos/:id/comments", (req, res) => {
   const id = req.params.id;
   const photo = getPhotoById(id);
@@ -41,10 +54,11 @@ router.get("/photos/:id/comments", (req, res) => {
   }
 });
 
+
+//post comment
 router.post("/photos/:id/comments", (req, res) => {
   const id = req.params.id;
   const { name, comment } = req.body;
-
   if (name.trim() === "" || comment.trim() === "") {
     return res
       .status(400)
