@@ -13,13 +13,12 @@ function readTags() {
 }
 
 router.get("/tags", (req, res) => {
-  try{
+  try {
     const tags = readTags();
     res.json(tags);
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
-
 });
 
 export default router;

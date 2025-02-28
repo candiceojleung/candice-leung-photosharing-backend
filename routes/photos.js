@@ -4,11 +4,11 @@ import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 
 function getPhotos() {
-  try{
+  try {
     const photosData = fs.readFileSync("./data/photos.json");
     const parsedPhotos = JSON.parse(photosData);
     return parsedPhotos;
-  } catch(error){
+  } catch (error) {
     console.log(error);
   }
 }
@@ -18,7 +18,7 @@ function getPhotoById(id) {
   return photos.find((photo) => photo.id === id) || null;
 }
 
-//get all photos 
+//get all photos
 router.get("/photos", (req, res) => {
   try {
     const photos = getPhotos();
@@ -28,8 +28,7 @@ router.get("/photos", (req, res) => {
   }
 });
 
-
-//get photo by id 
+//get photo by id
 router.get("/photos/:id", (req, res) => {
   const id = req.params.id;
   const photo = getPhotoById(id);
@@ -41,8 +40,7 @@ router.get("/photos/:id", (req, res) => {
   }
 });
 
-
-//get comment by photo id 
+//get comment by photo id
 router.get("/photos/:id/comments", (req, res) => {
   const id = req.params.id;
   const photo = getPhotoById(id);
@@ -53,7 +51,6 @@ router.get("/photos/:id/comments", (req, res) => {
     res.status(404).json({ message: "Photo not found" });
   }
 });
-
 
 //post comment
 router.post("/photos/:id/comments", (req, res) => {
