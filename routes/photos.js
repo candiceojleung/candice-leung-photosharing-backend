@@ -2,21 +2,24 @@ import express from "express";
 const router = express.Router();
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import readFiles from "../utils.js";
 
-function getPhotos() {
-  try {
-    const photosData = fs.readFileSync("./data/photos.json");
-    const parsedPhotos = JSON.parse(photosData);
-    return parsedPhotos;
-  } catch (error) {
+function getPhotos(){
+  try{
+    return readFiles('photos');
+  }catch (error){
     console.log(error);
   }
-}
+};
 
 function getPhotoById(id) {
-  const photos = getPhotos();
-  return photos.find((photo) => photo.id === id) || null;
-}
+  try{
+    const photos = getPhotos();
+    return photos.find((photo) => photo.id === id) || null;
+  }catch (error){
+    console.log(error);
+  }
+};
 
 //get all photos
 router.get("/photos", (req, res) => {
