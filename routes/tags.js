@@ -15,7 +15,7 @@ router.get("/tags", (req, res) => {
     const tags = readTags();
     res.json(tags);
   } catch (error) {
-    console.log(error);
+    console.log("Error getting tags", error);
   }
 });
 
