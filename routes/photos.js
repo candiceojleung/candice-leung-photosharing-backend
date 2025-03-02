@@ -65,33 +65,29 @@ router.get("/photos/:id/comments", (req, res) => {
 
 //post comment
 router.post("/photos/:id/comments", (req, res) => {
-  try {
-    const id = req.params.id;
-    const { name, comment } = req.body;
-    if (name.trim() === "" || comment.trim() === "") {
-      return res.status(400).json({
-        message: "Name and comment are required and must not be empty",
-      });
-    }
-
-    const photos = getPhotos();
-
-    const newComment = {
-      id: uuidv4(),
-      name: name,
-      comment: comment,
-      timestamp: Date.now(),
-    };
-
-    const photo = photos.find((photo) => photo.id === id);
-    if (!photo) {
-      return res.status(404).json({ message: "Photo not found" });
-    }
-
-    photo.comments.push(newComment);
-  } catch (error) {
-    console.log("Error posting comment", error);
+  const id = req.params.id;
+  const { name, comment } = req.body;
+  if (name.trim() === "" || comment.trim() === "") {
+    return res.status(400).json({
+      message: "Name and comment are required and must not be empty",
+    });
   }
+
+  const photos = getPhotos();
+
+  const newComment = {
+    id: uuidv4(),
+    name: name,
+    comment: comment,
+    timestamp: Date.now(),
+  };
+
+  const photo = photos.find((photo) => photo.id === id);
+  if (!photo) {
+    return res.status(404).json({ message: "Photo not found" });
+  }
+
+  photo.comments.push(newComment);
 
   try {
     fs.writeFileSync("./data/photos.json", JSON.stringify(photos, null, 2));
