@@ -3,12 +3,12 @@ const router = express.Router();
 import readFiles from "../utils.js";
 
 function readTags() {
-  try{
-    return readFiles('tags');
-  }catch (error){
+  try {
+    return readFiles("tags");
+  } catch (error) {
     console.log(error);
   }
-};
+}
 
 router.get("/tags", (req, res) => {
   try {
